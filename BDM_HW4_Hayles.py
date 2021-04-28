@@ -11,7 +11,7 @@ def calculateDate(x,dayOffset):
   return (start_date + datetime.timedelta(days=dayOffset)).strftime("%Y-%m-%d")
 
 if len(sys.argv) < 2:
-  return 
+    sys.exit(0)
 sc = pyspark.SparkContext()
 
 items = sc.broadcast([
