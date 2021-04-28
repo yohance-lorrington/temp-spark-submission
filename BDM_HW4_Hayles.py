@@ -10,8 +10,8 @@ def calculateDate(x,dayOffset):
   start_date =  datetime.datetime.strptime(x[1][:10], "%Y-%m-%d")
   return (start_date + datetime.timedelta(days=dayOffset)).strftime("%Y-%m-%d")
 
-# if len(sys.argv) < 2:
-#   return 
+if len(sys.argv) < 2:
+  return 
 sc = pyspark.SparkContext()
 
 items = sc.broadcast([
