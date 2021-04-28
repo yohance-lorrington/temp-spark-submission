@@ -48,4 +48,4 @@ for item in items.value:
   if  not patterns.isEmpty():
     sqlContext = SQLContext(sc)
     df = sqlContext.createDataFrame(patterns,['year','date','median','low','high'])
-    df.write.format("csv").save('{}/{}/{}.csv'.format(sys.argv[1],item[0],item[0]))
+    df.write.format("com.databricks.spark.csv").save('{}/{}/{}.csv'.format(sys.argv[1],item[0],item[0]),header='true)
