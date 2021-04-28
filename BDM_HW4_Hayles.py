@@ -41,12 +41,12 @@ for item in items.value:
     .map(lambda x: next(csv.reader([x]))) \
     .filter(lambda x: (x[1] in unique_ids)) \
     .map(lambda x: (x[1],x[12],json.loads(x[16]))) \
-    .flatMap(lambda x:  [(calculateDate(x,index),[visit])  for  index,visit in enumerate(x[2])] ) \
-    .reduceByKey(lambda a,b: a+b) \
-    .map(lambda x: (x[0][:4],x[0],int(np.median(x[1])),min(x[1]),max(x[1]))) \
-    .sortBy(lambda x:x[1])
+    .flatMap(lambda x:  [(calculateDate(x,index),visit)  for  index,visit in enumerate(x[2])] ) 
+  
   if  not patterns.isEmpty():
     sqlContext = SQLContext(sc)
-    df = sqlContext.createDataFrame(patterns,['year','date','median','low','high'])
+    df = sqlContext.createDataFrame(patterns,['date','visits'])
+    df = df.groupby('date').agg(lit(df['date'][0:4]).cast('string').alias('year'),min('visits').alias('low'),max('visits').alias('high'),expr('percentile(visits, array(0.5))')[0].cast('int').alias('median')) \
+            .orderBy('date',ascending=True)
     
     df.write.format("csv").option('header',True).mode('overwrite').save('{}/{}.csv'.format(sys.argv[1],item[0]))
