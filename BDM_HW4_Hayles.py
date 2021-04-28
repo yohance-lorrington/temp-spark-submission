@@ -6,6 +6,7 @@ import numpy as np
 from pyspark.sql import SQLContext
 import pyspark
 import sys
+from pyspark.sql.functions import *
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
 #
