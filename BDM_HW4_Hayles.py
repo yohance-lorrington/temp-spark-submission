@@ -30,12 +30,13 @@ items = sc.broadcast([
 ])
 
 for item in items.value:
-  unique_ids = set(sc.textFile('hdfs:///data/share/bdm/core-places-nyc.csv') \
+  unique_ids = [sc.textFile('hdfs:///data/share/bdm/core-places-nyc.csv') \
     .map(lambda x: x.split(',')) \
     .map(lambda x: (x[1],x[9])) \
     .filter(lambda x: (x[1] in item[1])) \
     .map(lambda x: x[0]) \
-    .collect())
+    .distinct() \
+    .collect()]
   
   patterns = sc.textFile('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*',use_unicode=False) \
     .map(lambda x: next(csv.reader([x]))) \
