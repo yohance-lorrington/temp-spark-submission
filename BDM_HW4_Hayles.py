@@ -37,7 +37,7 @@ for item in items.value:
     .map(lambda x: x[0]) \
     .collect())
   
-  patterns = sc.textFile('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*') \
+  patterns = sc.textFile('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*',use_unicode=False) \
     .map(lambda x: next(csv.reader([x]))) \
     .filter(lambda x: (x[1] in unique_ids)) \
     .map(lambda x: (x[1],x[12],json.loads(x[16]))) \
