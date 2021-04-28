@@ -49,4 +49,4 @@ for item in items.value:
     sqlContext = SQLContext(sc)
     df = sqlContext.createDataFrame(patterns,['year','date','median','low','high'])
     
-    df.write.format("csv").option('header',True).mode('overwrite').save('{}/{}/{}.csv'.format(sys.argv[1],item[0],item[0]))
+    df.write.format("csv").option('header',True).mode('overwrite').save('{}/{}.csv'.format(sys.argv[1],item[0]))
