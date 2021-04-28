@@ -8,7 +8,7 @@ import pyspark
 import sys
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
-#
+# added line here
 def calculateDate(x,dayOffset):
   start_date =  datetime.datetime.strptime(x[1][:10], "%Y-%m-%d")
   return (start_date + datetime.timedelta(days=dayOffset)).strftime("%Y-%m-%d")
