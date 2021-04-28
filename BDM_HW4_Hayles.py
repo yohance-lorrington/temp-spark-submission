@@ -6,8 +6,8 @@ import numpy as np
 from pyspark.sql import SQLContext
 import pyspark
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 #
 def calculateDate(x,dayOffset):
   start_date =  datetime.datetime.strptime(x[1][:10], "%Y-%m-%d")
