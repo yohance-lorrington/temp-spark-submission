@@ -55,12 +55,11 @@ for item in items.value:
     .map(lambda x: (x[0],list(x[1]))) \
     .map(lambda x: (x[0][0:4],x[0],x[1])) \
     .map(lambda x: (x[0],x[1],min(x[2]),max(x[2]),np.median(x[2]))) \
-    .map(toCSVLine)
     
 #   header = sc.parallelize(['year','date','low','high','median'])
 #   res = header.union(combined)
   if  not combined.isEmpty():
     sqlContext = SQLContext(sc)
     df = sqlContext.createDataFrame(combined,['year','date','low','high','median'])
-    df.write.mode("append").text('{}/{}'.format(sys.argv[1],item[0]))
+    df.write.format("csv").option('header',True).mode('overwrite').save('{}/{}.csv'.format(sys.argv[1],item[0]))
 
