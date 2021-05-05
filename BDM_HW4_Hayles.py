@@ -57,5 +57,10 @@ for item in items.value:
     .map(lambda x: (x[0],x[1],min(x[2]),max(x[2]),np.median(x[2]))) \
     .map(toCSVLine)
     
-  header = sc.parallelize(['year','date','low','high','median'])
-  header.union(combined).toDF.write.mode("append").text(outputPath).saveAsTextFile('{}/{}'.format(sys.argv[1],item[0]))  
+#   header = sc.parallelize(['year','date','low','high','median'])
+#   res = header.union(combined)
+  if  not combined.isEmpty():
+    sqlContext = SQLContext(sc)
+    df = sqlContext.createDataFrame(combined,['year','date','median','low','high'])
+    df.write.mode("append").text('{}/{}'.format(sys.argv[1],item[0]))
+
