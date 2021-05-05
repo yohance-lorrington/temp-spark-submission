@@ -61,6 +61,6 @@ for item in items.value:
 #   res = header.union(combined)
   if  not combined.isEmpty():
     sqlContext = SQLContext(sc)
-    df = sqlContext.createDataFrame(combined,['year','date','median','low','high'])
+    df = sqlContext.createDataFrame(combined,['year','date','low','high','median'])
     df.write.mode("append").text('{}/{}'.format(sys.argv[1],item[0]))
 
