@@ -57,5 +57,5 @@ for item in items.value:
     .map(lambda x: (x[0],x[1],min(x[2]),max(x[2]),np.median(x[2]))) \
     .map(toCSVLine)
     
-  header = sc.parallelize(['year','date','min','max','median'])
+  header = sc.parallelize(['year','date','low','high','median'])
   header.union(combined).saveAsTextFile('{}/{}/{}.csv'.format(sys.argv[1],item[0],item[0]))  
