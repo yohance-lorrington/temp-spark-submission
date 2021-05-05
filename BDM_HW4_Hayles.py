@@ -50,11 +50,10 @@ for item in items.value:
   combined = unique_ids.join(loaddata) \
     .map(lambda x: x[1][1]) \
     .map(handleTuple) \
-    .flatMap(lambda x:  [(calculateDate(x,index),visit)  for  index,visit in enumerate(x[1])] ) \
-    .groupByKey() \
-    .map(lambda x: (x[0],list(x[1]))) \
-    .map(lambda x: (x[0][0:4],x[0],x[1])) \
-    .map(lambda x: (x[0],x[1],min(x[2]),max(x[2]),np.median(x[2]))) \
+    .flatMap(lambda x:  [(calculateDate(x,index),[visit])  for  index,visit in enumerate(x[1])] ) \
+    .reduceByKey(lambda a,b: a+b) \
+    .map(lambda x: (x[0][:4],x[0],min(x[1]),max(x[1]),int(np.median(x[1])))) 
+
     
 #   header = sc.parallelize(['year','date','low','high','median'])
 #   res = header.union(combined)
