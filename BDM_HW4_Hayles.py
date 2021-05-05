@@ -36,7 +36,7 @@ items = sc.broadcast([
 ])
 
 for item in items.value:
-  unique_ids = sc.textFile('core_poi_ny.csv') \
+  unique_ids = sc.textFile('hdfs:///data/share/bdm/core-places-nyc.csv') \
     .map(lambda x: x.split(',')) \
     .map(lambda x: (x[1],x[9])) \
     .filter(lambda x: (x[1] in item[1])) \
