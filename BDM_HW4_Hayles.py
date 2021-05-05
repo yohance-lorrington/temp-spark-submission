@@ -58,4 +58,4 @@ for item in items.value:
     .map(toCSVLine)
     
   header = sc.parallelize(['year','date','low','high','median'])
-  header.union(combined).saveAsTextFile('{}'.format(item[0]))  
+  header.union(combined).toDF.write.mode("append").text(outputPath).saveAsTextFile('{}/{}'.format(sys.argv[1],item[0]))  
