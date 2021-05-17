@@ -6,6 +6,7 @@ import json
 import numpy as np
 import sys
 import math
+from functools import reduce
 CAT_CODES = {'445210', '445110', '722410', '452311', '722513', '445120', '446110', '445299', '722515', '311811', '722511', '445230', '446191', '445291', '445220', '452210', '445292'}
 CAT_GROUP = {'452210': 0,
              '452311': 0,
