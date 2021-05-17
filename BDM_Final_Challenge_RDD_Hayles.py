@@ -107,6 +107,7 @@ def main(sc):
 
   rddD = rddPlaces.mapPartitionsWithIndex(filterPOIs) \
           .cache()
+  storeGroup = dict(rddD.collect())
   groupCount = rddD \
     .map(lambda x: (x[1],1)) \
     .reduceByKey(lambda x,y: x+y) \
