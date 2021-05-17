@@ -54,14 +54,7 @@ def extractVisits(storeGroup, _, lines):
   items = map(lambda x: ((storeGroup[x[2]],x[0]),x[1]),items)
   return items
 
-def variance(data):
-  n = len(data)
-  mean = sum(data) / n
-  return sum((x - mean) ** 2 for x in data) / (n )
-def stdev(data):
-  var = variance(data)
-  std_dev = math.sqrt(var)
-  return std_dev
+
 def handleMedian(groupcounts,tupleObject):
   len_list = len(tupleObject[1])
   numberofzeros = groupcounts - len_list
@@ -69,26 +62,26 @@ def handleMedian(groupcounts,tupleObject):
   if groupcounts % 2 == 0:
     if groupcounts//2 <= numberofzeros:
       median  = 0;
-      std = stdev(tupleObject[1])
+      std = np.std(tupleObject[1])
       minV = max(0,median - std)
       maxV = max(0,median + std)
       return (tupleObject[0],median,minV,maxV)
     else:
       median = tupleObject[1][groupcounts//2 - numberofzeros]
-      std = stdev(tupleObject[1])
+      std = np.std(tupleObject[1])
       minV = max(0,median - std)
       maxV = max(0,median + std)
       return (tupleObject[0],median,minV,maxV)
   else:
     if groupcounts//2 <= numberofzeros:
       median  = 0;
-      std = stdev(tupleObject[1])
+      std = np.std(tupleObject[1])
       minV = max(0,median - std)
       maxV = max(0,median + std)
       return (tupleObject[0],median,minV,maxV)
     else:
       median = (tupleObject[1][groupcounts//2 - numberofzeros] + tupleObject[1][groupcounts//2 - numberofzeros + 1])/2
-      std = stdev(tupleObject[1])
+      std = np.std(tupleObject[1])
       minV = max(0,median - std)
       maxV = max(0,median + std)
       return (tupleObject[0],median,minV,maxV)
