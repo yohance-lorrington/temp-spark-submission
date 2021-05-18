@@ -45,9 +45,10 @@ def getTimeGreaterThan2018(x):
 def extractVisits(storeGroup, _, lines):
   next(lines)
   items = map(lambda x: next(csv.reader([x])),lines) 
-  items = map(lambda x: (x[0],x[12],x[14],json.loads(x[16])),items)
+  items = map(lambda x: (x[0],x[12],x[14],x[16]),items)
   items = filter(getTimeGreaterThan2018,items)
   items = filter(lambda x: x[0] in storeGroup,items)
+  items = map(lambda x: (x[0],x[1],x[2],json.loads(x[3]),items
   items = map(lambda x:  [(calculateDateNUM(x,index),visit,x[0])  for  index,visit in enumerate(x[3])],items )
   items = reduce((lambda arr1, arr2: arr1 + arr2), items)
   items = filter(lambda x: x[0]>=0,items)
@@ -91,7 +92,7 @@ def main(sc):
   rddG = rddPattern \
     .mapPartitionsWithIndex(functools.partial(extractVisits, storeGroup))
   rddI = rddG.groupByKey() \
-        .map(lambda x: (x[0],sorted(list(x[1])))) \
+        .map(lambda x: (x[0],list(x[1]))) \
         .map(lambda x: handleMedian(groupCount[x[0][0]],x)) \
         .map(lambda x: (x[0][0],makeTimeStamp(x[0][1]),x[1],x[2],x[3])) \
         .map(lambda x: (x[0],x[1][0:4],x[1],x[2],x[3],int(x[4]))) \
