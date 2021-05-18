@@ -92,7 +92,7 @@ def main(sc):
   rddG = rddPattern \
     .mapPartitionsWithIndex(functools.partial(extractVisits, storeGroup))
   rddI = rddG.groupByKey() \
-        .map(lambda x: (x[0],list(x[1]))) \
+        .map(lambda x: (x[0],sorted(list(x[1])))) \
         .map(lambda x: handleMedian(groupCount[x[0][0]],x)) \
         .map(lambda x: (x[0][0],makeTimeStamp(x[0][1]),x[1],x[2],x[3])) \
         .map(lambda x: (x[0],x[1][0:4],x[1],x[2],x[3],int(x[4]))) \
