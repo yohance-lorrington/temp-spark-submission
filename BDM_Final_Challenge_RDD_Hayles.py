@@ -58,33 +58,13 @@ def extractVisits(storeGroup, _, lines):
 def handleMedian(groupcounts,tupleObject):
   len_list = len(tupleObject[1])
   numberofzeros = groupcounts - len_list
-
-  if groupcounts % 2 == 0:
-    if groupcounts//2 <= numberofzeros:
-      median  = 0;
-      std = np.std(tupleObject[1])
-      minV = max(0,median - std)
-      maxV = max(0,median + std)
-      return (tupleObject[0],median,minV,maxV)
-    else:
-      median = tupleObject[1][groupcounts//2 - numberofzeros]
-      std = np.std(tupleObject[1])
-      minV = max(0,median - std)
-      maxV = max(0,median + std)
-      return (tupleObject[0],median,minV,maxV)
-  else:
-    if groupcounts//2 <= numberofzeros:
-      median  = 0;
-      std = np.std(tupleObject[1])
-      minV = max(0,median - std)
-      maxV = max(0,median + std)
-      return (tupleObject[0],median,minV,maxV)
-    else:
-      median = (tupleObject[1][groupcounts//2 - numberofzeros] + tupleObject[1][groupcounts//2 - numberofzeros + 1])/2
-      std = np.std(tupleObject[1])
-      minV = max(0,median - std)
-      maxV = max(0,median + std)
-      return (tupleObject[0],median,minV,maxV)
+  formatted_array = np.pad(tupleObject[1],(numberofzeros,),mode='constant',constant_values=(0,))
+  std_dev = np.std(tupleObject[1])
+  medianV = np.median(formatted_array)
+  minV = max(0,medianV - std_dev)
+  maxV = max(0,medianV + std_dev)
+ 
+  return (tupleObject[0],medianV,minV,maxV)
 def makeTimeStamp(dateDifferenceInt):
   start_date = datetime.datetime(2019, 1, 1)
   end_day = start_date + datetime.timedelta(days=dateDifferenceInt)
