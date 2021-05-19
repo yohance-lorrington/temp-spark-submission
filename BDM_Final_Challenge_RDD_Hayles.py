@@ -95,7 +95,7 @@ def main(sc):
         .map(lambda x: (x[0],sorted(list(x[1])))) \
         .map(lambda x: handleMedian(groupCount[x[0][0]],x)) \
         .map(lambda x: (x[0][0],makeTimeStamp(x[0][1]),x[1],x[2],x[3])) \
-        .map(lambda x: (x[0],x[1][0:4],x[1],x[2],x[3],int(x[4]))) \
+        .map(lambda x: (x[0],x[1][0:4],"2020{}".format(x[1][4:]),x[2],x[3],int(x[4]))) \
         .map(lambda x : (x[0],"{},{},{},{},{}".format(x[1],x[2],x[3],x[4],x[5])))
   rddJ = rddI.sortBy(lambda x: x[1][:15])
   header = sc.parallelize([(-1, 'year,date,median,low,high')]).coalesce(1)
