@@ -46,8 +46,8 @@ def extractVisits(storeGroup, _, lines):
   next(lines)
   items = map(lambda x: next(csv.reader([x])),lines) 
   items = map(lambda x: (x[0],x[12],x[14],x[16]),items)
-  items = filter(getTimeGreaterThan2018,items)
   items = filter(lambda x: x[0] in storeGroup,items)
+  items = filter(getTimeGreaterThan2018,items)
 #   items = map(lambda x: (x[0],x[1],x[2],json.loads(x[3])),items)
   items = map(lambda x:  [(calculateDateNUM(x,index),visit,x[0])  for  index,visit in enumerate(json.loads(x[3]))],items )
   items = reduce((lambda arr1, arr2: arr1 + arr2), items)
@@ -66,10 +66,14 @@ def handleMedian(groupcounts,tupleObject):
   maxV = max(0,medianV + std_dev)
  
   return (tupleObject[0],medianV,minV,maxV)
+def toCSVLine(data):
+  return ','.join(str(d) for d in data)
 def makeTimeStamp(dateDifferenceInt):
   start_date = datetime.datetime(2019, 1, 1)
   end_day = start_date + datetime.timedelta(days=dateDifferenceInt)
-  return end_day.strftime("%Y-%m-%d")
+  return "2020-"+end_day.strftime("%m-%d")
+def return2019or2020(num):
+  return '2019' if num <365 else '2020'
 def main(sc):
   '''
   Transfer our code from the notebook here, however, remember to replace
@@ -94,9 +98,8 @@ def main(sc):
   rddI = rddG.groupByKey() \
         .map(lambda x: (x[0],sorted(list(x[1])))) \
         .map(lambda x: handleMedian(groupCount[x[0][0]],x)) \
-        .map(lambda x: (x[0][0],makeTimeStamp(x[0][1]),x[1],x[2],x[3])) \
-        .map(lambda x: (x[0],x[1][0:4],"2020{}".format(x[1][4:]),x[2],x[3],int(x[4]))) \
-        .map(lambda x : (x[0],"{},{},{},{},{}".format(x[1],x[2],x[3],x[4],x[5])))
+        .map(lambda x: (x[0][0],return2019or2020(x[0][1]),makeTimeStamp(x[0][1]),x[1],x[2],int(x[3]))) \
+        .map(lambda x : (x[0],toCSVLine(x[1:6])))
   rddJ = rddI.sortBy(lambda x: x[1][:15])
   header = sc.parallelize([(-1, 'year,date,median,low,high')]).coalesce(1)
   rddJ = (header + rddJ).coalesce(10).cache()
